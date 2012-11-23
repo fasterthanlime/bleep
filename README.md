@@ -1,6 +1,6 @@
 ## bleep
 
-bleep is sound library for ooc
+bleep is a sound library for ooc
 
 ### Authors
 
