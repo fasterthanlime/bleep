@@ -135,7 +135,7 @@ FramePipe: class {
     data = gc_malloc(capacity)
   }
 
-  write: func (dst: UInt8*, requestedFrames: Long) {
+  write: func (dst: UInt8*, requestedFrames: Long) -> Long {
     written := 0
     requested := requestedFrames * framesize
 
