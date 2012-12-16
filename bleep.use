@@ -1,5 +1,5 @@
 Name: bleep
 Description: sound library for ooc
-Requires: cubeb, vorbis, deadlogger
+Requires: sdl, sdl-mixer, deadlogger
 SourcePath: source
 
