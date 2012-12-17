@@ -26,10 +26,10 @@ Bleep: class {
         Mix allocateChannels
     }
 
-    playMusic: func (path: String) {
+    playMusic: func (path: String, loops: Int) {
         logger info("Loading music %s" format(path))
         mus := Mix loadMus(path)
-        mus play(-1)
+        mus play(loops)
     } 
 
     /* only wav supported */
