@@ -32,6 +32,10 @@ Bleep: class {
         mus play(loops)
     } 
 
+    stopMusic: func {
+        Mix haltMusic()
+    }
+
     /* only wav supported */
     loadSample: func (path: String) -> Sample {
         logger info("Loading sample %s" format(path))
