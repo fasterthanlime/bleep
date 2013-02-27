@@ -1,6 +1,6 @@
 
-use sdl, sdl-mixer
-import sdl/[Core, Mixer]
+use sdl2, sdl2-mixer
+import sdl2/[Core, Mixer]
 
 use deadlogger
 import deadlogger/Log
