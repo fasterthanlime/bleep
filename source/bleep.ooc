@@ -86,7 +86,12 @@ Bleep: class {
     /* only wav supported */
     loadSample: func (path: String) -> Sample {
         logger info("Loading sample %s" format(path))
-        Sample new(Mix loadWav(path))
+        chunk := Mix loadWav(path)
+        if (!chunk) {
+            return null
+        }
+
+        Sample new(chunk)
     }
 
     destroy: func {
