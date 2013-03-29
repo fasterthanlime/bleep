@@ -83,7 +83,31 @@ Bleep: class {
         musicStopListeners remove(bl)
     }
 
-    /* only wav supported */
+    /**
+     * Set the volume of all channels, or of the specified
+     * channel (if second arg given)
+     */
+    setVolume: func (volume: Float, channel := -1) {
+        Mix volume(channel, (volume * 128.0) as Int)
+    }
+
+    setVolumeMusic: func (volume: Float) {
+        Mix volumeMusic((volume * 128.0) as Int)
+    }
+
+    getVolume: func (channel := -1) -> Float {
+        Mix volume(channel, -1) as Float / 128.0
+    }
+
+    getVolumeMusic: func -> Float {
+        Mix volumeMusic(-1) as Float / 128.0
+    }
+
+    /**
+     * Load a sample in WAV format
+     * If there's an error (file can't be found/read, invalid format),
+     * null will be returned instead.
+     */
     loadSample: func (path: String) -> Sample {
         logger info("Loading sample %s" format(path))
         chunk := Mix loadWav(path)
@@ -109,8 +133,16 @@ Sample: class {
 
     }
 
-    play: func (loops: Int) {
-        channel = chunk play(-1, loops)
+    setVolume: func (volume: Float) {
+        chunk volume((volume * 128.0) as Int)
+    }
+
+    getVolume: func -> Float {
+        (chunk volume(-1) as Float) / 128.0
+    }
+
+    play: func (loops: Int, channel := -1) {
+        channel = chunk play(channel, loops)
     }
 
     stop: func {
@@ -118,6 +150,10 @@ Sample: class {
             Mix haltChannel(channel)
             channel = -1
         }
+    }
+
+    free: func {
+        chunk free()
     }
 
 }
