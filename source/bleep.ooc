@@ -55,7 +55,7 @@ Bleep: class {
         logger info("Loading music #{path}")
         mus := Mix loadMus(path)
         if (!mus) {
-            logger error("Couldn't load #{path}")
+            logger error("Couldn't load music #{path}: #{Mix getError() toString()}")
         }
         mus play(loops)
     } 
@@ -115,7 +115,7 @@ Bleep: class {
         logger info("Loading sample #{path}")
         chunk := Mix loadWav(path)
         if (!chunk) {
-            logger error("Couldn't load #{path}")
+            logger error("Couldn't load sample #{path}: #{Mix getError() toString()}")
             return null
         }
 
