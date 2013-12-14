@@ -52,8 +52,11 @@ Bleep: class {
     }
 
     playMusic: func (path: String, loops: Int) {
-        logger info("Loading music %s" format(path))
+        logger info("Loading music #{path}")
         mus := Mix loadMus(path)
+        if (!mus) {
+            logger error("Couldn't load #{path}")
+        }
         mus play(loops)
     } 
 
@@ -109,9 +112,10 @@ Bleep: class {
      * null will be returned instead.
      */
     loadSample: func (path: String) -> Sample {
-        logger info("Loading sample %s" format(path))
+        logger info("Loading sample #{path}")
         chunk := Mix loadWav(path)
         if (!chunk) {
+            logger error("Couldn't load #{path}")
             return null
         }
 
