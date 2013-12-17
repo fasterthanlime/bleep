@@ -5,12 +5,15 @@ import sdl2/[Core, Mixer]
 use deadlogger
 import deadlogger/Log
 
-import structs/ArrayList, os/Time, io/FileWriter
+import structs/[ArrayList, HashMap]
+import io/File
 
 Bleep: class {
 
     logger := static Log getLogger("bleep")
     musicStopListeners := ArrayList<BleepListener> new()
+    musicCache := HashMap<String, MixMusic> new()
+    chunkCache := HashMap<String, MixChunk> new()
 
     name: String
 
@@ -53,10 +56,19 @@ Bleep: class {
 
     playMusic: func (path: String, loops: Int) {
         logger info("Loading music #{path}")
-        mus := Mix loadMus(path)
+        absolutePath := File new(path) getAbsolutePath()
+        mus := musicCache get(absolutePath)
         if (!mus) {
-            logger error("Couldn't load music #{path}: #{Mix getError() toString()}")
+            mus = Mix loadMus(path)
+
+            if (!mus) {
+                logger error("Couldn't load music #{path}: #{Mix getError() toString()}")
+                return
+            }
+
+            musicCache put(absolutePath, mus)
         }
+
         mus play(loops)
     } 
 
@@ -113,10 +125,16 @@ Bleep: class {
      */
     loadSample: func (path: String) -> Sample {
         logger info("Loading sample #{path}")
-        chunk := Mix loadWav(path)
+        absolutePath := File new(path) getAbsolutePath()
+        chunk := chunkCache get(absolutePath)
+
         if (!chunk) {
-            logger error("Couldn't load sample #{path}: #{Mix getError() toString()}")
-            return null
+            chunk = Mix loadWav(path)
+            if (!chunk) {
+                logger error("Couldn't load sample #{path}: #{Mix getError() toString()}")
+                return null
+            }
+            chunkCache put(absolutePath, chunk)
         }
 
         Sample new(chunk)
@@ -133,9 +151,7 @@ Sample: class {
     chunk: MixChunk
     channel := -1
 
-    init: func (=chunk) {
-
-    }
+    init: func (=chunk)
 
     setVolume: func (volume: Float) {
         chunk volume((volume * 128.0) as Int)
