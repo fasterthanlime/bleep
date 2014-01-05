@@ -23,8 +23,9 @@ Bleep: class {
         SDL init(SDL_INIT_EVERYTHING)
 
         if (Mix openAudio(44100, MixFormat default, 2, 1024)) {
-            logger error("Couldn't initialize SDL mixer")
-            raise("Error initializing SDL mixer")
+            err := Mix getError() toString()
+            logger error("Couldn't initialize SDL mixer: #{err}")
+            raise("Error initializing SDL mixer: #{err}")
         }
 
         if (instance) {
