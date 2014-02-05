@@ -22,7 +22,7 @@ Bleep: class {
     init: func {
         SDL init(SDL_INIT_EVERYTHING)
 
-        if (Mix openAudio(44100, MixFormat default, 2, 1024)) {
+        if (Mix openAudio(44100, MixFormat default_, 2, 1024)) {
             err := Mix getError() toString()
             logger error("Couldn't initialize SDL mixer: #{err}")
             raise("Error initializing SDL mixer: #{err}")
