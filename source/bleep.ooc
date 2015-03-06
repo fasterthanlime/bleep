@@ -81,6 +81,10 @@ Bleep: class {
         Mix fadeOutMusic(milliseconds)
     }
 
+    setMusicPos: func (pos: Double) {
+        Mix setMusicPosition(pos)
+    }
+
     musicPlaying?: func -> Bool {
         Mix playingMusic()
     }
